@@ -1,7 +1,5 @@
-#!/usr/bin/env python
-import header
-print """\
-<span class="span4">
+<?php include('header.php'); ?>
+	<span class="span4">
 	</span>
 	<span class="span5">
 		<div class="hero-unit">
@@ -9,5 +7,5 @@ print """\
 		</div>
 	</span>
 	<span class="span3">
-	</span>"""
-import footer
+	</span>
+<?php include('footer.php'); ?>

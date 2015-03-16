@@ -1,55 +1,47 @@
-#!/usr/bin/env python
-from paypal_functions import *
-import cgi
-import cgitb; cgitb.enable()
-from ConfigParser import SafeConfigParser
-import urllib
-import socket
+<?php
 
-parser = SafeConfigParser()
-parser.read('paypal_config.ini')
+   require_once("paypal_functions.php");
+  
+   //Call to SetExpressCheckout using the shopping parameters collected from the shopping form on index.php and few from config.php 
 
-form = cgi.FieldStorage()
-#Call to SetExpressCheckout using the shopping parameters collected from the shopping form on index.py and few from config.py
-USERACTION_FLAG = parser.get('Credentials','USERACTION_FLAG')
-#if USERACTION_FLAG != 'True' :
-if USERACTION_FLAG == 'True':
-        returnURL = 'http://'+socket.gethostbyname(socket.gethostname())+ '/cgi-bin/Checkout/return.py' 
-else:
-        returnURL = 'http://'+socket.gethostbyname(socket.gethostname())+ '/cgi-bin/Checkout/review.py'
-cancelURL = 'http://'+socket.gethostbyname(socket.gethostname())+ '/cgi-bin/Checkout/cancel.py'
-# form Fields
-form_fields = {}
-for key in form.keys():
-	form_fields[str(key)] = str(form.getvalue(str(key)))
+   $returnURL = RETURN_URL;
+   $cancelURL = CANCEL_URL; 
+   
+   if(isset($_POST["PAYMENTREQUEST_0_ITEMAMT"]))
+		$_POST["L_PAYMENTREQUEST_0_AMT0"]=$_POST["PAYMENTREQUEST_0_ITEMAMT"];
+  
+   if(!isset($_POST['Confirm']) && isset($_POST['checkout'])){
 
-if form.getvalue("PAYMENTREQUEST_0_ITEMAMT"):
-	PAYMENTREQUEST_0_ITEMAMT = form.getvalue("PAYMENTREQUEST_0_ITEMAMT")
-	form_fields['L_PAYMENTREQUEST_0_AMT0'] = PAYMENTREQUEST_0_ITEMAMT
-#Show an intermediate page if it is not Shortcut.
-if not form.getvalue("Confirm") and form.getvalue("checkout"):
-	import header
-	htmlCode ="""\
-	<div class="span4">
-   	</div>
-   	<div class="span5">
+		if($_REQUEST["checkout"] || isset($_SESSION['checkout'])) {
+			$_SESSION['checkout'] = $_POST['checkout'];
+		}
+	$_SESSION['post_value'] = $_POST;
+	
+	//Assign the Return and Cancel to the Session object for ExpressCheckout Mark
+	$returnURL = RETURN_URL_MARK;
+	$_SESSION['post_value']['RETURN_URL'] = $returnURL;
+	$_SESSION['post_value']['CANCEL_URL'] = $cancelURL;
+	$_SESSION['EXPRESS_MARK'] = 'ECMark';
+   include('header.php');
+?>
+   <div class="span4">
+   </div>
+   <div class="span5">
             <!--Form containing item parameters and seller credentials needed for SetExpressCheckout Call-->
-            <form class="form" action="paypal_ec_mark.py" method="POST">
+            <form class="form" action="paypal_ec_mark.php" method="POST">
                <div class="row-fluid">
                   <div class="span6 inner-span">
                         <p class="lead">Shipping Address</p>
                         <table>
-                        <input type="hidden" name="L_PAYMENTREQUEST_0_AMT" value={0}>
-			<input type="hidden" name="form_fields" value={1}>
-			<input type="hidden" name="EXPRESS_MARK" value="ECMark"></input>
-                        <tr><td width="30%">First Name</td><td><input type="text" name="L_PAYMENTREQUEST_FIRSTNAME" value="Alegra"></input></td></tr>
-                        <tr><td>Last Name:</td><td><input type="text" name="L_PAYMENTREQUEST_LASTNAME" value="Valava"></input></td></tr>
-                        <tr><td>Address</td><td><input type="text" name="PAYMENTREQUEST_0_SHIPTOSTREET" value="55 East 52nd Street"></input></td></tr>
-                        <tr><td>Address 1</td><td><input type="text" name="PAYMENTREQUEST_0_SHIPTOSTREET2" value="21st Floor"></input></td></tr>
-                        <tr><td>City:</td><td><input type="text" name="PAYMENTREQUEST_0_SHIPTOCITY" value="New York" ></input></td></tr>
-                        <tr><td>State:</td><td><input type="text" name="PAYMENTREQUEST_0_SHIPTOSTATE" value="NY" ></input></td></tr>
-                        <tr><td>Postal Code:</td><td><input type="text" name="PAYMENTREQUEST_0_SHIPTOZIP" value="10022" ></input></td></tr>
-                        <tr><td>Country</td><td><select id="PAYMENTREQUEST_0_SHIPTOZIP" name="PAYMENTREQUEST_0_SHIPTOCOUNTRY">
+                        <input type="hidden" name="L_PAYMENTREQUEST_0_AMT" value="<?php echo $_POST["PAYMENTREQUEST_0_AMT"]; ?>">
+                        <tr><td width="30%">First Name</td><td><input type="text" name="L_PAYMENTREQUEST_FIRSTNAME" value=""></input></td></tr>
+                        <tr><td>Last Name:</td><td><input type="text" name="L_PAYMENTREQUEST_LASTNAME" value=""></input></td></tr>
+                        <tr><td>Address</td><td><input type="text" name="PAYMENTREQUEST_0_SHIPTOSTREET" value=""></input></td></tr>
+                        <tr><td>Address 1</td><td><input type="text" name="PAYMENTREQUEST_0_SHIPTOSTREET2" value=""></input></td></tr>
+                        <tr><td>City:</td><td><input type="text" name="PAYMENTREQUEST_0_SHIPTOCITY" value="" ></input></td></tr>
+                        <tr><td>State:</td><td><input type="text" name="PAYMENTREQUEST_0_SHIPTOSTATE" value="" ></input></td></tr>
+                        <tr><td>Postal Code:</td><td><input type="text" name="PAYMENTREQUEST_0_SHIPTOZIP" value="" ></input></td></tr>
+                        <tr><td>Country</td><td><select id="PAYMENTREQUEST_0_SHIPTOCOUNTRY" name="PAYMENTREQUEST_0_SHIPTOCOUNTRY">
 							<option value="AF">Afghanistan</option>
 							<option value="AX">Aland Islands</option>
 							<option value="AL">Albania</option>
@@ -280,7 +272,7 @@ if not form.getvalue("Confirm") and form.getvalue("checkout"):
 							<option value="UA">Ukraine</option>
 							<option value="AE">United Arab Emirates</option>
 							<option value="GB">United Kingdom</option>
-							<option selected value="US">United States</option>
+							<option value="US">United States</option>
 							<option value="UM">United States Minor Outlying Islands</option>
 							<option value="UY">Uruguay</option>
 							<option value="UZ">Uzbekistan</option>
@@ -294,18 +286,22 @@ if not form.getvalue("Confirm") and form.getvalue("checkout"):
 							<option value="YE">Yemen</option>
 							<option value="ZM">Zambia</option>
 							<option value="ZW">Zimbabwe</option>
-							</select></td></tr>
+							</select></td>
+						</tr>
                         <tr><td>Telephone:</td><td><input type="text" name="PAYMENTREQUEST_0_SHIPTOPHONENUM" value="" maxlength="12"></input></td></tr>
 						
                         <tr><td colspan="2"><p class="lead">Shipping Detail:</p></td></tr>
                         <tr><td>Shipping Type: </td><td><select name="shipping_method" id="shipping_method" style="width: 250px;" class="required-entry">
 					<option value="">Please select a shipping method...</option>
 					<optgroup label="United Parcel Service" style="font-style:normal;">
-						<option value="2.00">Worldwide Expedited - $2.00</option>
-						<option value="3.00">Worldwide Express Saver - $3.00</option>
+					<option value="2.00">
+					Worldwide Expedited - $2.00</option>
+					<option value="3.00">
+					Worldwide Express Saver - $3.00</option>
 					</optgroup>
 					<optgroup label="Flat Rate" style="font-style:normal;">
-						<option value="0.00">Fixed - $0.00</option>
+					<option value="0.00">
+					Fixed - $0.00</option>
 					</optgroup>
 					</select><br>
 						</td></tr>
@@ -322,27 +318,32 @@ if not form.getvalue("Confirm") and form.getvalue("checkout"):
                   </div>
                </div>
             </form>
-   	</div>
-   	<div class="span3">
-   	</div>"""
-	print htmlCode.format(urllib.quote_plus(form.getvalue("PAYMENTREQUEST_0_AMT")),urllib.urlencode(form_fields))
-else:
-	resArray = CallShortcutExpressCheckout (form_fields, returnURL, cancelURL) #calling SetExpressCheckout for PayPal Shortcut
-   	ack = resArray.get("ACK")[0].upper()
-   	if ack=="SUCCESS" or ack=="SUCCESSWITHWARNING":  #if SetExpressCheckout API call is successful
-		RedirectToPayPal ( resArray["TOKEN"] )
-    
-   	else:     	
-   		#Display a user friendly Error on the page using any of the following error information returned by PayPal
-   		ErrorCode = resArray.get('L_ERRORCODE0')
-   		ErrorShortMsg = resArray.get('L_SHORTMESSAGE0')
-   		ErrorLongMsg = resArray.get('L_LONGMESSAGE0')
-   		ErrorSeverityCode = resArray.get('L_SEVERITYCODE0')
-		print "Content-type: text/html\n\n"
-   		print "SetExpressCheckout API call failed. "
-   		print "Detailed Error Message: " +ErrorLongMsg[0]
-   		print "Short Error Message: " +ErrorShortMsg[0]
-   		print "Error Code: " +ErrorCode[0]
-   		print "Error Severity Code: " + ErrorSeverityCode[0]
-	
+   </div>
+   <div class="span3">
+   </div>
+   <?php
+   } else {
 
+   $resArray = CallShortcutExpressCheckout ($_POST, $returnURL, $cancelURL);
+   $ack = strtoupper($resArray["ACK"]);
+   if($ack=="SUCCESS" || $ack=="SUCCESSWITHWARNING")  //if SetExpressCheckout API call is successful
+   {
+		RedirectToPayPal ( $resArray["TOKEN"] );
+   } 
+   else  
+   {
+   	//Display a user friendly Error on the page using any of the following error information returned by PayPal
+   	$ErrorCode = urldecode($resArray["L_ERRORCODE0"]);
+   	$ErrorShortMsg = urldecode($resArray["L_SHORTMESSAGE0"]);
+   	$ErrorLongMsg = urldecode($resArray["L_LONGMESSAGE0"]);
+   	$ErrorSeverityCode = urldecode($resArray["L_SEVERITYCODE0"]);
+   	
+   	echo "SetExpressCheckout API call failed. ";
+   	echo "Detailed Error Message: " . $ErrorLongMsg;
+   	echo "Short Error Message: " . $ErrorShortMsg;
+   	echo "Error Code: " . $ErrorCode;
+   	echo "Error Severity Code: " . $ErrorSeverityCode;
+   }
+   }
+   
+?>
