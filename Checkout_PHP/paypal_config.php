@@ -1,13 +1,13 @@
 <?php
 //Seller Sandbox Credentials- Sample credentials already provided
-define("PP_USER_SANDBOX", "supersandy_api1.gmail.com");
-define("PP_PASSWORD_SANDBOX", "1400525332");
-define("PP_SIGNATURE_SANDBOX", "AdUaGhfPganVo2IfGf2Ctordn94OASnvL6qF4D-pnHb6hEQCLBWKbzmq");
+define("PP_USER_SANDBOX", "omar.khalid.yahya-facilitator_api1.gmail.com");
+define("PP_PASSWORD_SANDBOX", "4SLWKZYU86VQDTJC");
+define("PP_SIGNATURE_SANDBOX", "AFcWxV21C7fd0v3bYYYRCpSSRl31AwJqMrChK.ycHT8TMQE2DH1PTppp");
 
 //Seller Live credentials.
-define("PP_USER","seller_username_here");
-define("PP_PASSWORD", "seller_password_here");
-define("PP_SIGNATURE","seller_signature_here");
+define("PP_USER","omar.khalid.yahya-facilitator_api1.gmail.com");
+define("PP_PASSWORD", "4SLWKZYU86VQDTJC");
+define("PP_SIGNATURE","AFcWxV21C7fd0v3bYYYRCpSSRl31AwJqMrChK.ycHT8TMQE2DH1PTppp");
 
 //Set this constant EXPRESS_MARK = true to skip review page
 define("EXPRESS_MARK", true);
