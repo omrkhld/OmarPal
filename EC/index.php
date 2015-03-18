@@ -1,179 +1,249 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-		<meta charset="utf-8">
-		<title>Omar's WTS List</title>
-		<meta name="generator" content="OmarPal" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<link href="css/bootstrap.min.css" rel="stylesheet">
-		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-		<!--[if lt IE 9]>
-			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-		<![endif]-->
-		<link href="css/styles.css" rel="stylesheet">
-	</head>
-	<body>
-<!--template-->
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container" style="">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-             <span class="icon-bar"></span>
-             <span class="icon-bar"></span>
-             <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">OmarPal</a>
-        </div>
-        <div class="collapse navbar-collapse" style="">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#" class="" style="">Store</a>
+<?php
+session_start();
 
-                </li>
-                <li><a href="about.html" class="">About</a>
+$page_title="Products";
+include 'head.php';
 
-                </li>
-            </ul>
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="cart.html" class="navbar-nav">Cart<span class="glyphicon glyphicon-shopping-cart"></span></a></li>
-			</ul>
-        </div>
-        <!--/.nav-collapse -->
-    </div>
-</div>
-<div class="container">
-    <div class="col-md-12">
-        <div class="center-block text-center">
-            <h1>Omar's WTS List</h1>
-            <p class="lead">Game On</p>
-        </div>
-        <div class="container">
-            <div class="menu row">
-                <div class="product col-sm-6">
-					<link href="bootstrap-modal-carousel.css" rel="stylesheet" />
-					<script src="bootstrap-modal-carousel.js"/></script/>
-					<button type="button" class="btn" data-toggle="modal" data-target="#myModal" data-local="#myCarousel">Twilight Imperium 3E</button>
-					<div id="myCarousel" class="carousel slide carousel-fit" data-ride="carousel">
-						<!-- Indicators -->
-						<ol class="carousel-indicators">
-							<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-							<li data-target="#myCarousel" data-slide-to="1"></li>
-							<li data-target="#myCarousel" data-slide-to="2"></li>
-						</ol>
-					
-						<!-- Wrapper for slides -->
-						<div class="carousel-inner">
-							<div class="item active">
-								<img data-src="holder.js/900x500/auto/#777:#555/text:First slide" alt="First slide">
-							</div>
-							<div class="item">
-								<img data-src="holder.js/750x400/auto/#666:#444/text:Second slide" alt="Second slide">
-							</div>
-							<div class="item">
-								<img data-src="holder.js/600x300/auto/#555:#333/text:Third slide" alt="Third slide">
-							</div>
+// to prevent undefined index notice
+$action = isset($_GET['action']) ? $_GET['action'] : "";
+$id = isset($_GET['id']) ? $_GET['id'] : "1";
+$name = isset($_GET['name']) ? $_GET['name'] : "";
+
+if($action=='added'){
+    echo "<div class='alert alert-info'>";
+        echo "<strong>{$name}</strong> was added to your cart!";
+    echo "</div>";
+}
+
+if($action=='exists'){
+    echo "<div class='alert alert-info'>";
+        echo "<strong>{$name}</strong> already exists in your cart!";
+    echo "</div>";
+}
+
+echo '<div class="container">';
+    echo '<div class="col-md-12">';
+		echo '<div class="center-block text-center">';
+			echo '<h1>Omar\'s WTS List</h1>';
+            echo '<p class="lead">Game On</p>';
+        echo '</div>';
+        echo '<div class="container">';
+            echo '<div class="row">';
+				$results = $mysqli->query("SELECT * FROM Items ORDER BY id ASC");
+				if ($results) {
+					//fetch results set as object and output HTML
+					while($obj = $results->fetch_object())
+					{
+						echo '<div class="col-sm-6 col-md-4">'; 
+						echo '<div class="thumbnail"><img src="assets/'.$obj->img.'">';
+						echo '<div class="caption"><h3>'.$obj->name.'</h3>';
+						echo '<div class="product-info">';
+						echo '<hr><h2 class="text-right">'.$currency.$obj->price.'</h2>';
+						echo '<p><a href="#'.$obj->short.'Modal" class="btn btn-default" role="button" data-toggle="modal">Details</a>';
+						echo '<a href="add_to_cart.php?id='.$obj->id.'&name='.$obj->name.'" class="btn btn-primary pull-right">Add To Cart</a></p>';
+						echo '</div></div></div>';
+						echo '</form>';
+						echo '</div>';
+					}
+				}
+			echo '</div>';
+            //<!--/row-->
+        echo '</div>';
+        //<!--/container-->
+    echo '</div>';
+echo '</div>';
+?>
+
+<!-- TI3 Modal -->
+<div id="TI3Modal" style="top:10%;" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">Twilight Imperium 3</h3>
+			</div>
+			<div class="modal-body">
+				<p><div id="carousel-1" class="carousel slide container">
+					<ol class="carousel-indicators">
+						<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+						<li data-target="#myCarousel" data-slide-to="1"></li>
+						<li data-target="#myCarousel" data-slide-to="2"></li>
+					</ol>
+					<div class="carousel-inner">
+						<!-- Slide 0-->
+						<div class="item active">
+							<img src="assets/TI3_1.jpg" alt="TI3_1" />
 						</div>
-						
-						<!-- Controls -->
-						<a class="left carousel-control" href="#myCarousel" data-slide="prev">
-							<span class="glyphicon glyphicon-chevron-left"></span>
-						</a>
-						<a class="right carousel-control" href="#myCarousel" data-slide="next">
-							<span class="glyphicon glyphicon-chevron-right"></span>
-						</a>
+						<!-- Slide 1-->
+						<div class="item">
+							<img src="assets/TI3_2.jpg" alt="TI3_2" />
+						</div>
+						<!-- Slide 2-->
+						<div class="item">
+							<img src="assets/TI3_3.jpg" alt="TI3_3" />
+						</div>
 					</div>
-
-					<div class="modal fade modal-fullscreen force-fullscreen" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-									<h4 class="modal-title">Modal title</h4>
-								</div>
-								<div class="modal-body">
-									<p>One fine body…</p>
-								</div>
-								<div class="modal-footer">
-									<h2 class="text-center">Twilight Imperium 3rd Edition</h2>
-									<p class="text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate. 
-									Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis 
-									dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan. 
-									Aliquam in felis sit amet augue.</p>
-									<hr>
-									<h2 class="text-right">$80</h2>
-									<button class="btn btn-primary btn-lg ">Add to Cart</button>
-									<hr>
-									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-								</div>
-							</div><!-- /.modal-content -->
-						</div><!-- /.modal-dialog -->
-					</div><!-- /.modal -->
-                </div>
-                <div class="col-sm-6">
-                    <div class="productsrow">
-                        <div class="product menu-category">
-                            <div class="menu-category-name list-group-item active">Accessories</div>
-                            <div class="product-image">
-                                <img class="product-image menu-item list-group-item" src="/assets/example/ec_belt.jpg">
-                            </div> <a href="#" class="menu-item list-group-item">Belt<span class="badge">£28</span></a>
-
-                        </div>
-                        <div class="product menu-category">
-                            <div class="menu-category-name list-group-item active">Jeans</div>
-                            <div class="product-image">
-                                <img class="product-image menu-item list-group-item" src="/assets/example/ec_jeans.jpg">
-                            </div> <a href="#" class="menu-item list-group-item">Dark Blue Jeans<span class="badge">$80</span></a>
-
-                        </div>
-                        <div class="product menu-category">
-                            <div class="menu-category-name list-group-item active">Pants</div>
-                            <div class="product-image">
-                                <img class="product-image menu-item list-group-item" src="/assets/example/ec_pants.jpg">
-                            </div> <a href="#" class="menu-item list-group-item">Light Grean Chinos<span class="badge">$59</span></a>
-
-                        </div>
-                        <div class="product menu-category">
-                            <div class="menu-category-name list-group-item active">Denim</div>
-                            <div class="div-image">
-                                <img class="product-image menu-item list-group-item" src="/assets/example/ec_jacket.jpg">
-                            </div> <a href="#" class="menu-item list-group-item">Denim Jacket<span class="badge">$56</span></a>
-
-                        </div>
-                        <div class="product menu-category">
-                            <div class="menu-category-name list-group-item active">Accessories</div>
-                            <div class="product-image">
-                                <img class="product-image menu-item list-group-item" src="/assets/example/ec_socks.jpg">
-                            </div> <a href="#" class="menu-item list-group-item">Socks<span class="badge">$56</span></a>
-
-                        </div>
-                        <div class="product menu-category">
-                            <div class="menu-category-name list-group-item active">Belt</div>
-                            <div class="product-image">
-                                <img class="product-image menu-item list-group-item" src="/assets/example/ec_belt.jpg">
-                            </div> <a href="#" class="menu-item list-group-item">Brown Belt<span class="badge">£18</span></a>
-
-                        </div>
-                        <div class="product menu-category">
-                            <div class="menu-category-name list-group-item active">Layer</div>
-                            <div class="product-image">
-                                <img class="product-image menu-item list-group-item" src="/assets/example/ec_sweater.jpg">
-                            </div> <a href="#" class="menu-item list-group-item">Shawl Neck<span class="badge">46</span></a>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--/row-->
-        </div>
-        <!--/container-->
-    </div>
+					<a class="left carousel-control" href="#carousel-1" role="button" data-slide="prev">
+						<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+						<span class="sr-only">Previous</span>
+					</a>
+					<a class="right carousel-control" href="#carousel-1" role="button" data-slide="next">
+						<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+						<span class="sr-only">Next</span>
+					</a>
+				</div></p>
+				<p>Long Description here</p>
+				<hr><h2 class="text-right">$84.99</h2>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			</div>
+		</div>
+	</div>
 </div>
 
-<hr>
+<!-- EC Modal -->
+<div id="ECModal" style="top:10%;" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">Eclipse</h3>
+			</div>
+			<div class="modal-body">
+				<p><div id="carousel-2" class="carousel slide container">
+					<ol class="carousel-indicators">
+						<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+						<li data-target="#myCarousel" data-slide-to="1"></li>
+						<li data-target="#myCarousel" data-slide-to="2"></li>
+					</ol>
+					<div class="carousel-inner">
+						<!-- Slide 0-->
+						<div class="item active">
+							<img src="assets/EC_1.jpg" alt="EC_1" />
+						</div>
+						<!-- Slide 1-->
+						<div class="item">
+							<img src="assets/EC_2.jpg" alt="EC_2" />
+						</div>
+						<!-- Slide 2-->
+						<div class="item">
+							<img src="assets/EC_3.jpg" alt="EC_3" />
+						</div>
+					</div>
+					<a class="left carousel-control" href="#carousel-2" role="button" data-slide="prev">
+						<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+						<span class="sr-only">Previous</span>
+					</a>
+					<a class="right carousel-control" href="#carousel-2" role="button" data-slide="next">
+						<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+						<span class="sr-only">Next</span>
+					</a>
+				</div></p>
+				<p>Long Description here</p>
+				<hr><h2 class="text-right">$90.00</h2>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
 
-<!--/template-->
-	<!-- script references -->
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-	</body>
-</html>
+<!-- DI Modal -->
+<div id="DIModal" style="top:10%;" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">Diplomacy 50th Anniversary Edition</h3>
+			</div>
+			<div class="modal-body">
+				<p><div id="carousel-3" class="carousel slide container">
+					<ol class="carousel-indicators">
+						<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+						<li data-target="#myCarousel" data-slide-to="1"></li>
+						<li data-target="#myCarousel" data-slide-to="2"></li>
+					</ol>
+					<div class="carousel-inner">
+						<!-- Slide 0-->
+						<div class="item active">
+							<img src="assets/DI_1.jpg" alt="DI_1" />
+						</div>
+						<!-- Slide 1-->
+						<div class="item">
+							<img src="assets/DI_2.jpg" alt="DI_2" />
+						</div>
+						<!-- Slide 2-->
+						<div class="item">
+							<img src="assets/DI_3.jpg" alt="DI_3" />
+						</div>
+					</div>
+					<a class="left carousel-control" href="#carousel-3" role="button" data-slide="prev">
+						<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+						<span class="sr-only">Previous</span>
+					</a>
+					<a class="right carousel-control" href="#carousel-3" role="button" data-slide="next">
+						<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+						<span class="sr-only">Next</span>
+					</a>
+				</div></p>
+				<p>Long Description here</p>
+				<hr><h2 class="text-right">$40.50</h2>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- DE Modal -->
+<div id="DEModal" style="top:10%;" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">Descent: Journeys in the Dark 2nd Edition</h3>
+			</div>
+			<div class="modal-body">
+				<p><div id="carousel-4" class="carousel slide container">
+					<ol class="carousel-indicators">
+						<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+						<li data-target="#myCarousel" data-slide-to="1"></li>
+						<li data-target="#myCarousel" data-slide-to="2"></li>
+					</ol>
+					<div class="carousel-inner">
+						<!-- Slide 0-->
+						<div class="item active">
+							<img src="assets/DE_1.jpg" alt="DE_1" />
+						</div>
+						<!-- Slide 1-->
+						<div class="item">
+							<img src="assets/DE_2.jpg" alt="DE_2" />
+						</div>
+						<!-- Slide 2-->
+						<div class="item">
+							<img src="assets/DE_3.jpg" alt="DE_3" />
+						</div>
+					</div>
+					<a class="left carousel-control" href="#carousel-4" role="button" data-slide="prev">
+						<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+						<span class="sr-only">Previous</span>
+					</a>
+					<a class="right carousel-control" href="#carousel-4" role="button" data-slide="next">
+						<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+						<span class="sr-only">Next</span>
+					</a>
+				</div></p>
+				<p>Long Description here</p>
+				<hr><h2 class="text-right">$59.99</h2>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<?php include 'foot.php'; ?>
