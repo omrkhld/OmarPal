@@ -1,9 +1,7 @@
 # OmarPal
-http://omarpal.comli.com/
+http://omarpal.heliohost.org/
 
-Demonstrating PayPal Express Checkout integration
-
-https://github.com/PayPalLabs/applications-2015
+Demonstrating PayPal Express Checkout integration - https://github.com/PayPalLabs/applications-2015
 
 OmarPal is an online store that lists and sells items sold by me, Omar.
 
@@ -11,24 +9,17 @@ It makes use of PayPal's Express Checkout integration to facilitate purchases an
 
 Bootstrap theme from http://www.bootstrapzero.com/bootstrap-template/e-commerce
 
-Free server hosting by http://www.000webhost.com/
+Free server hosting by http://www.heliohost.com/
 
 # Original Files
-index.php - The main page.
-
-cart.php - Displays the contents of the Shopping cart to the user.
-
-config.php - Establishes connection to the MySQL database.
-
-head.php - The header for index and cart files. Invokes config.php.
-
-foot.php - The footer for index and cart files.
-
-navbar.php - Defines the style and functionality of the top navigation bar. Invoked by head.php.
-
-add_to_cart.php - Allows adding of items to cart. Called by and redirects to index.php.
-
-remove_from_cart.php - Allows removal of items from cart. Called by and redirects to cart.php.
+1. index.php - The main page.
+2. cart.php - Displays the contents of the Shopping cart to the user.
+3. config.php - Establishes connection to the MySQL database.
+4. head.php - The header for index and cart files. Invokes config.php.
+5. foot.php - The footer for index and cart files.
+6. navbar.php - Defines the style and functionality of the top navigation bar. Invoked by head.php.
+7. add_to_cart.php - Allows adding of items to cart. Called by and redirects to index.php.
+8. remove_from_cart.php - Allows removal of items from cart. Called by and redirects to cart.php.
 
 # Files from PayPal
 All can be found in Checkout_PHP folder.
@@ -44,25 +35,19 @@ The only table in the database is "Items".
 
 The fields of this table are:
 
-id: int - The Unique and Primary key of the Items table.
+1. id: int - The Unique and Primary key of the Items table.
+2. name: varchar(60) - The name of the item.
+3. img: varchar(60) - The name of the image to be used for the item in index.php.
+4. short: varchar(60) - The shortened name or abbreviation of the item name.
+5. price: decimal(10,2) - The price of the item, default = 0.00
 
-name: varchar(60) - The name of the item.
-
-img: varchar(60) - The name of the image to be used for the item in index.php.
-
-short: varchar(60) - The shortened name or abbreviation of the item name.
-
-price: decimal(10,2) - The price of the item, default = 0.00
-
-This table is filled up beforehand through 000webhost's phpMyAdmin interface.
+This table is filled up beforehand through the phpMyAdmin interface.
 
 "index.php" makes use of the variables:
 
-$action - To denote what type action has been processed (added or exists)
-
-$id - ID of item added to cart
-
-$name - Name of item added to cart
+1. $action - To denote what type action has been processed (added or exists)
+2. $id - ID of item added to cart
+3. $name - Name of item added to cart
 
 When the user clicks on an "Add to cart" button, add_to_cart.php will be called, along with additional information,
 which is the id and the name of the item that the user wants to add.
