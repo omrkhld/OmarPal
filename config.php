@@ -1,9 +1,9 @@
 <?php
 $currency = '$'; //Currency symbol or code
 
-$db_username = 'a1267577_admin';
-$db_password = 'password1';
-$db_name = 'a1267577_cart';
-$db_host = 'mysql6.000webhost.com';
+$db_username = 'omrkhld_admin';
+$db_password = 'O1m2A3r4';
+$db_name = 'omrkhld_db';
+$db_host = 'localhost';
 $mysqli = new mysqli($db_host, $db_username, $db_password,$db_name);
 ?>
